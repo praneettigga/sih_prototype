@@ -1,34 +1,65 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import ChatInterface from './components/ChatInterface'
+import UserDetailsForm from './components/UserDetailsForm'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [showForm, setShowForm] = useState(true)
+  const [userRegistered, setUserRegistered] = useState(false)
+  const [messages, setMessages] = useState([])
+
+  const handleFormSubmit = (userDetails) => {
+    setUserRegistered(true)
+    setShowForm(false)
+    // Add welcome message
+    setMessages([
+      {
+        id: 1,
+        text: `Welcome! Your profile has been set up successfully. How can I help you find the perfect internship today?`,
+        isBot: true,
+        timestamp: new Date()
+      }
+    ])
+  }
+
+  const handleSendMessage = (message) => {
+    const newMessage = {
+      id: Date.now(),
+      text: message,
+      isBot: false,
+      timestamp: new Date()
+    }
+    
+    setMessages(prev => [...prev, newMessage])
+    
+    // Simulate bot response
+    setTimeout(() => {
+      const botResponse = {
+        id: Date.now() + 1,
+        text: "I'm here to help you. This is a simulated response.",
+        isBot: true,
+        timestamp: new Date()
+      }
+      setMessages(prev => [...prev, botResponse])
+    }, 1000)
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <div className="min-h-screen bg-gray-50">
+      <ChatInterface 
+        messages={messages}
+        onSendMessage={handleSendMessage}
+        userRegistered={userRegistered}
+        onOpenForm={() => setShowForm(true)}
+      />
+      
+      {showForm && (
+        <UserDetailsForm 
+          onSubmit={handleFormSubmit}
+          onClose={() => setShowForm(false)}
+        />
+      )}
+    </div>
   )
 }
 
