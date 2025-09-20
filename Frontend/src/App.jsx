@@ -1,15 +1,4 @@
 import { useState } from 'react'
-<<<<<<< HEAD
-import InternshipRecommendationForm from './components/InternshipRecommendationForm'
-import './App.css'
-
-function App() {
-  return (
-    <>
-      <InternshipRecommendationForm />
-    </>
-  );
-=======
 import ChatInterface from './components/ChatInterface'
 import UserDetailsForm from './components/UserDetailsForm'
 import './App.css'
@@ -72,7 +61,6 @@ function App() {
       )}
     </div>
   )
->>>>>>> 784c6d892a3334028b61924cc0822e8089e6b892
 }
 
 export default App
