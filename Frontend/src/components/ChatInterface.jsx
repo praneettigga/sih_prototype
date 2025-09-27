@@ -4,6 +4,70 @@ const ChatInterface = ({ messages, onSendMessage, userRegistered, onOpenForm }) 
   const [inputMessage, setInputMessage] = useState('')
   const messagesEndRef = useRef(null)
 
+  // Mock internship data with high match percentages
+  const recommendedInternships = [
+    {
+      id: 1,
+      title: "Data Science Intern",
+      company: "TechFlow Analytics",
+      location: "Bangalore, India",
+      duration: "3 months",
+      stipend: "₹5,000/month",
+      matchPercentage: 94,
+      skills: ["Python", "Machine Learning", "SQL", "Data Analysis"],
+      description: "Work on cutting-edge AI projects, analyze large datasets, and build predictive models for enterprise clients.",
+      type: "Remote"
+    },
+    {
+      id: 2,
+      title: "Frontend Development Intern",
+      company: "PixelCraft Studios",
+      location: "Mumbai, India",
+      duration: "4 months",
+      stipend: "₹5,000/month",
+      matchPercentage: 91,
+      skills: ["React", "JavaScript", "HTML/CSS", "UI/UX Design"],
+      description: "Create stunning user interfaces for web applications using modern frontend technologies and design systems.",
+      type: "Hybrid"
+    },
+    {
+      id: 3,
+      title: "Backend Development Intern",
+      company: "CloudScale Technologies",
+      location: "Hyderabad, India",
+      duration: "6 months",
+      stipend: "₹5,000/month",
+      matchPercentage: 89,
+      skills: ["Node.js", "Java", "AWS", "MongoDB", "API Development"],
+      description: "Build scalable backend systems, design RESTful APIs, and work with cloud infrastructure.",
+      type: "On-site"
+    },
+    {
+      id: 4,
+      title: "DevOps Engineering Intern",
+      company: "InfraMax Solutions",
+      location: "Pune, India",
+      duration: "5 months",
+      stipend: "₹5,000/month",
+      matchPercentage: 87,
+      skills: ["Docker", "Kubernetes", "AWS", "CI/CD", "Linux"],
+      description: "Automate deployment pipelines, manage containerized applications, and optimize cloud infrastructure.",
+      type: "Remote"
+    },
+    {
+      id: 5,
+      title: "Full Stack Web Development Intern",
+      company: "NexGen Digital",
+      location: "Delhi, India",
+      duration: "4 months",
+      stipend: "₹5,000/month",
+      matchPercentage: 92,
+      skills: ["React", "Node.js", "JavaScript", "PostgreSQL", "Git"],
+      description: "Develop end-to-end web applications, from responsive frontends to robust backend services.",
+      type: "Hybrid"
+    }
+  ]
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
   }
@@ -82,24 +146,92 @@ const ChatInterface = ({ messages, onSendMessage, userRegistered, onOpenForm }) 
         ) : (
           <>
             {messages.length === 0 ? (
-              <div className="flex flex-col items-center justify-center h-full space-y-6">
-                <div className="text-center max-w-2xl">
-                  <h2 className="text-5xl font-thin mb-6 bg-gradient-to-r from-blue-900 to-blue-700 bg-clip-text text-transparent">
-                    What's on your mind today?
+              <div className="flex flex-col h-full space-y-6 p-6">
+                {/* Personalized Recommendations Header */}
+                <div className="text-center mb-6">
+                  <h2 className="text-4xl font-thin mb-4 bg-gradient-to-r from-blue-900 to-blue-700 bg-clip-text text-transparent">
+                    Personalized Internship Recommendations
                   </h2>
-                  <p className="text-gray-600 text-lg">Ask me anything to get started</p>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8 max-w-lg">
-                    <div className="p-4 bg-gray-50 rounded-lg border border-gray-200 hover:border-orange-300 hover:bg-orange-50 transition-colors cursor-pointer">
-                      <p className="text-sm text-gray-700">💡 Ask about anything</p>
+                  <p className="text-gray-600 text-lg">Based on your profile, here are the top matches for you!</p>
+                </div>
+
+                {/* Internship Cards */}
+                <div className="flex-1 overflow-y-auto space-y-4 max-w-6xl mx-auto w-full">
+                  {recommendedInternships.map((internship) => (
+                    <div key={internship.id} className="bg-white border border-gray-200 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 animate-fade-in">
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="flex-1">
+                          <div className="flex items-center space-x-3 mb-2">
+                            <h3 className="text-xl font-semibold text-gray-900">{internship.title}</h3>
+                            <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
+                              internship.type === 'Remote' ? 'bg-green-100 text-green-800' :
+                              internship.type === 'Hybrid' ? 'bg-blue-100 text-blue-800' :
+                              'bg-orange-100 text-orange-800'
+                            }`}>
+                              {internship.type}
+                            </span>
+                          </div>
+                          <p className="text-lg text-blue-700 font-medium mb-1">{internship.company}</p>
+                          <p className="text-gray-600 mb-3">{internship.location} • {internship.duration}</p>
+                        </div>
+                        <div className="text-right">
+                          <div className="flex items-center space-x-2 mb-2">
+                            <span className="text-2xl font-bold text-green-600">{internship.matchPercentage}%</span>
+                            <span className="text-sm text-gray-500">Match</span>
+                          </div>
+                          <div className="w-20 bg-gray-200 rounded-full h-3">
+                            <div 
+                              className="bg-gradient-to-r from-green-500 to-green-600 h-3 rounded-full transition-all duration-500"
+                              style={{ width: `${internship.matchPercentage}%` }}
+                            ></div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <p className="text-gray-700 mb-4 leading-relaxed">{internship.description}</p>
+
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <div className="flex flex-wrap gap-2 mb-3">
+                            {internship.skills.map((skill, index) => (
+                              <span key={index} className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200">
+                                {skill}
+                              </span>
+                            ))}
+                          </div>
+                          <p className="text-lg font-semibold text-orange-600">{internship.stipend}</p>
+                        </div>
+                        <div className="flex space-x-3">
+                          <button className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition-colors duration-200">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="mr-2">
+                              <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.51 4.04 3 5.5l11 11z"/>
+                            </svg>
+                            Save
+                          </button>
+                          <button className="inline-flex items-center px-6 py-2 bg-gradient-to-r from-blue-900 to-blue-700 text-white rounded-lg hover:from-blue-800 hover:to-blue-600 transition-all duration-200 transform hover:scale-105 font-semibold shadow-lg">
+                            Apply Now
+                          </button>
+                        </div>
+                      </div>
                     </div>
-                    <div className="p-4 bg-gray-50 rounded-lg border border-gray-200 hover:border-orange-300 hover:bg-orange-50 transition-colors cursor-pointer">
-                      <p className="text-sm text-gray-700">🔍 Get help with research</p>
+                  ))}
+                </div>
+
+                {/* Chat Prompt */}
+                <div className="text-center pt-6 border-t border-gray-200">
+                  <p className="text-gray-600 mb-4">Have questions about any of these internships?</p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-lg mx-auto">
+                    <div className="p-3 bg-gray-50 rounded-lg border border-gray-200 hover:border-orange-300 hover:bg-orange-50 transition-colors cursor-pointer">
+                      <p className="text-sm text-gray-700">� Ask about requirements</p>
                     </div>
-                    <div className="p-4 bg-gray-50 rounded-lg border border-gray-200 hover:border-orange-300 hover:bg-orange-50 transition-colors cursor-pointer">
-                      <p className="text-sm text-gray-700">📝 Writing assistance</p>
+                    <div className="p-3 bg-gray-50 rounded-lg border border-gray-200 hover:border-orange-300 hover:bg-orange-50 transition-colors cursor-pointer">
+                      <p className="text-sm text-gray-700">� Help with applications</p>
                     </div>
-                    <div className="p-4 bg-gray-50 rounded-lg border border-gray-200 hover:border-orange-300 hover:bg-orange-50 transition-colors cursor-pointer">
-                      <p className="text-sm text-gray-700">💻 Code help</p>
+                    <div className="p-3 bg-gray-50 rounded-lg border border-gray-200 hover:border-orange-300 hover:bg-orange-50 transition-colors cursor-pointer">
+                      <p className="text-sm text-gray-700">� Find similar roles</p>
+                    </div>
+                    <div className="p-3 bg-gray-50 rounded-lg border border-gray-200 hover:border-orange-300 hover:bg-orange-50 transition-colors cursor-pointer">
+                      <p className="text-sm text-gray-700">� Career guidance</p>
                     </div>
                   </div>
                 </div>
